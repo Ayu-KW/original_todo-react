@@ -7,14 +7,25 @@ import { CompleteTodos } from "./components/CompleteTodos";
 import "./style.css";
 
 export const App = () => {
-  // Stateの設定
-  const [todoTask, settodoTask] = useState("");
+  // Stateの設定（再レンダリング）
+  const [todoText, settodoText] = useState("");
+  const [incompleteTodos, setincompleteTodos] = useState(["あいうえお", "かきくけこ"]);
+  // const [completeTodos, setcompleteTodos] = useState(["はひふへほ"]);
 
-  // 入力欄・未完了リスト・完了リスト
+  // 処理一覧（ボタンイベント）
+  // 引数（e：入力した値）を元に入力欄Stateを再レンダリング
+  const onChangetodoText = (e) => settodoText(e.target.value);
+  // 追加ボタンが押された時の挙動
+  const onClickAdd = () => {
+    const newTodos = [...incompleteTodos, todoText];
+    setincompleteTodos(newTodos);
+  };
+
+  // HTML出力範囲
   return (
     <>
-      <InputTodo />
-      <IncompleteTodos />
+      <InputTodo todoText={todoText} onChange={onChangetodoText} onClick={onClickAdd} />
+      <IncompleteTodos todos={incompleteTodos} />
       <CompleteTodos />
     </>
   );
