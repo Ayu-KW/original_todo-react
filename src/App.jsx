@@ -11,7 +11,7 @@ export const App = () => {
   // Stateの設定（再レンダリング）
   const [todoText, settodoText] = useState("");
   const [incompleteTodos, setincompleteTodos] = useState(["あいうえお", "かきくけこ"]);
-  // const [completeTodos, setcompleteTodos] = useState(["はひふへほ"]);
+  const [completeTodos, setcompleteTodos] = useState(["はひふへほ"]);
 
   // 処理一覧（ボタンイベント）
   // 引数（e：入力した値）を元に入力欄Stateを再レンダリング
@@ -29,13 +29,21 @@ export const App = () => {
     newTodos.splice(index, 1);
     setincompleteTodos(newTodos);
   };
+  // 完了ボタンが押された時の挙動
+  const onClickComplete = (index) => {
+    const newIncompleteTodos = [...incompleteTodos];
+    newIncompleteTodos.splice(index, 1);
+    const newCompleteTodos = [...completeTodos, incompleteTodos[index]];
+    setincompleteTodos(newIncompleteTodos);
+    setcompleteTodos(newCompleteTodos);
+  };
 
   // HTML出力範囲
   return (
     <>
       <InputTodo todoText={todoText} onChange={onChangetodoText} onClick={onClickAdd} />
-      <IncompleteTodos todos={incompleteTodos} onClickDelete={onClickDelete} />
-      <CompleteTodos />
+      <IncompleteTodos todos={incompleteTodos} onClickDelete={onClickDelete} onClickComplete={onClickComplete} />
+      <CompleteTodos todos={completeTodos} />
     </>
   );
 };
