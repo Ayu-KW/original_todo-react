@@ -1,9 +1,10 @@
 // 現在は下記の記述を省くことができる（システムに怒られるケースもあるらしいが…。）
 import { useState } from "react";
+// コンポーネントを読み込む
 import { InputTodo } from "./components/InputTodo";
 import { IncompleteTodos } from "./components/IncompleteTodos";
 import { CompleteTodos } from "./components/CompleteTodos";
-
+// CSSファイルを読み込む
 import "./style.css";
 
 export const App = () => {
@@ -17,7 +18,15 @@ export const App = () => {
   const onChangetodoText = (e) => settodoText(e.target.value);
   // 追加ボタンが押された時の挙動
   const onClickAdd = () => {
+    if (todoText === "") return;
     const newTodos = [...incompleteTodos, todoText];
+    setincompleteTodos(newTodos);
+    settodoText("");
+  };
+  // 削除ボタンを押された時の挙動
+  const onClickDelete = (index) => {
+    const newTodos = [...incompleteTodos];
+    newTodos.splice(index, 1);
     setincompleteTodos(newTodos);
   };
 
@@ -25,7 +34,7 @@ export const App = () => {
   return (
     <>
       <InputTodo todoText={todoText} onChange={onChangetodoText} onClick={onClickAdd} />
-      <IncompleteTodos todos={incompleteTodos} />
+      <IncompleteTodos todos={incompleteTodos} onClickDelete={onClickDelete} />
       <CompleteTodos />
     </>
   );
