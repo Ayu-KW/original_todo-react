@@ -10,8 +10,8 @@ import "./style.css";
 export const App = () => {
   // Stateの設定（再レンダリング）
   const [todoText, settodoText] = useState("");
-  const [incompleteTodos, setincompleteTodos] = useState(["あいうえお", "かきくけこ"]);
-  const [completeTodos, setcompleteTodos] = useState(["はひふへほ"]);
+  const [incompleteTodos, setincompleteTodos] = useState([]);
+  const [completeTodos, setcompleteTodos] = useState([]);
 
   // 処理一覧（ボタンイベント）
   // 引数（e：入力した値）を元に入力欄Stateを再レンダリング
@@ -37,13 +37,21 @@ export const App = () => {
     setincompleteTodos(newIncompleteTodos);
     setcompleteTodos(newCompleteTodos);
   };
+  // 戻すボタンが押された時の挙動
+  const onClickBack = (index) => {
+    const newCompleteTodos = [...completeTodos];
+    newCompleteTodos.splice(index, 1);
+    const newIncompleteTodos = [...incompleteTodos, completeTodos[index]];
+    setcompleteTodos(newCompleteTodos);
+    setincompleteTodos(newIncompleteTodos);
+  };
 
   // HTML出力範囲
   return (
     <>
       <InputTodo todoText={todoText} onChange={onChangetodoText} onClick={onClickAdd} />
       <IncompleteTodos todos={incompleteTodos} onClickDelete={onClickDelete} onClickComplete={onClickComplete} />
-      <CompleteTodos todos={completeTodos} />
+      <CompleteTodos todos={completeTodos} onClickBack={onClickBack} />
     </>
   );
 };
